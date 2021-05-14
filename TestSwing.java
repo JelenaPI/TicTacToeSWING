@@ -1,4 +1,3 @@
-
 package tictactoe;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -20,35 +19,14 @@ public class TestSwing extends Frame implements WindowListener,ActionListener {
     static Button b6;
     static Button b7;
     static Button b8;
-    boolean endOfGame = false;
-    //private static
-    //private static
+    static boolean endOfGame;
+    
     public static void main(String[] args) {  
-              //String data = "         ";
         field = new Field();
         field.setElements("         ");
         player = 'X';
-        new TestSwing();//"Tic tac toe");
-        //startGame(field);
-        
-
-    }
-    public static void startGame(Field field){
-        player = 'X';
-        boolean endOfGame = false;
-        while(!endOfGame){
-            
- ///           int[] coordinates = {button.getName().charAt(6)/3, button.getName().charAt(6)%3};
-            
-            if(field.isWinner(player)){
-///                statusLabel.setText(player + " wins");
-                endOfGame = true;
-            }            
-            player = changePlayer(player);
-        }
-        if(!endOfGame){
-         //   statusLabel.setText("Draw");
-        }
+        endOfGame = false;
+        new TestSwing();
     }
     
     public TestSwing(){
@@ -82,26 +60,22 @@ public class TestSwing extends Frame implements WindowListener,ActionListener {
 
         statusLabel = new JLabel();
         statusLabel.setBounds(20, 460, 150, 40);
-        
         statusLabel.setText("Game is not started");
         statusLabel.setVisible(true);
         f.add(statusLabel);
 
         JButton resetButton = new JButton();
         resetButton.setBounds(300, 460, 90, 40);
-        resetButton.setText("Reset");
-         
-        
+        resetButton.setText("Reset"); 
         resetButton.addActionListener(this);
         f.add(resetButton);
-
         f.setSize(460,550);
         f.setLayout(null); 
         f.setVisible(true);//making the frame visible 
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println("button is clicked");
+        endOfGame = false;
         field.setElements("         ");
         statusLabel.setText("Game in progress");
         b0.setText(" ");
@@ -126,9 +100,7 @@ public class TestSwing extends Frame implements WindowListener,ActionListener {
     public static String whoWins(Field field, String data){
         
         String message;
-        String line = data;
         int countX = countOccurrences(data,'X');
-        //line = data;
         int countO = countOccurrences(data,'O');
         if(Math.abs(countX - countO) > 1){
             message = "Impossible";
@@ -138,23 +110,23 @@ public class TestSwing extends Frame implements WindowListener,ActionListener {
                     message = "Impossible";
                 } else {
                     message ="X wins";
+                    endOfGame = true;
                 }
             } else {
                 if(field.isWinner('O')){
                     message = "O wins";
+                    endOfGame = true;
                 } else {
                     if(field.isFull(data)){
                         message = "Draw ";
                     } else {
-                        message = "Game not finished";
+                        message = "Game in progress";
                     }
                 }
             }
         }
         statusLabel.setText(message);
-        return message;
-        
-        
+        return message; 
     }
     public static int countOccurrences(String haystack, char needle)
     {
@@ -169,9 +141,6 @@ public class TestSwing extends Frame implements WindowListener,ActionListener {
         return count;
     }
 
-    
-    
-    
     public void windowClosing(WindowEvent e) {
         System.exit(0);
     }
@@ -181,10 +150,7 @@ public class TestSwing extends Frame implements WindowListener,ActionListener {
         public void windowIconified(WindowEvent e) {}
         public void windowDeiconified(WindowEvent e) {}
         public void windowDeactivated(WindowEvent e) {}
-        public void windowClosed(WindowEvent e) {}
-
-    
-  
+        public void windowClosed(WindowEvent e) {}   
     }
 
   
