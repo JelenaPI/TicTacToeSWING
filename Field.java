@@ -15,12 +15,13 @@ public class Field extends JPanel {
     static Cell buttonA1;
     static Cell buttonB1;
     static Cell buttonC1;
-    static List<Cell> buttons;
+    static ArrayList<Cell> freeButtons;
 
     public Field() {
-        buttons = new ArrayList<>();
+        freeButtons = new ArrayList<>();
         this.setLayout(new GridLayout(3, 3));
-        setSize(450,450);
+        this.setSize(450,450);
+        this.setLocation(0,30);
         setVisible(true);
         buttonA3 = new Cell("A3");
         buttonB3 = new Cell("B3");
@@ -31,57 +32,62 @@ public class Field extends JPanel {
         buttonA1 = new Cell("A1");
         buttonB1 = new Cell("B1");
         buttonC1 = new Cell("C1");
-        buttons = List.of(buttonA3,buttonB3,buttonC3,buttonA2,buttonB2,buttonC2,buttonA1,buttonB1,buttonC1);
-        for(Cell b:buttons) add(b);
+        freeButtons.addAll(List.of(buttonA3,buttonB3,buttonC3,buttonA2,buttonB2,buttonC2,buttonA1,buttonB1,buttonC1));
+        for(Cell b:freeButtons) add(b);
         this.setVisible(true);
     }
-
+    public static void blockCells() {
+        for (Cell x : List.of(buttonA3,buttonB3,buttonC3,buttonA2,buttonB2,buttonC2,buttonA1,buttonB1,buttonC1)) {
+            x.setEnabled(false);
+        }
+    }
+    public static void unlockCells() {
+        for (Cell x : List.of(buttonA3,buttonB3,buttonC3,buttonA2,buttonB2,buttonC2,buttonA1,buttonB1,buttonC1)) {
+            x.setEnabled(true);
+        }
+    }
     public static void resetButtons() {
-        buttonA3.setText(" ");
-        buttonB3.setText(" ");
-        buttonC3.setText(" ");
-        buttonA2.setText(" ");
-        buttonB2.setText(" ");
-        buttonC2.setText(" ");
-        buttonA1.setText(" ");
-        buttonB1.setText(" ");
-        buttonC1.setText(" ");
+        for(Cell b:(List.of(buttonA3,buttonB3,buttonC3,
+                buttonA2,buttonB2,buttonC2,buttonA1,buttonB1,buttonC1))) {
+            b.setText(" ");
+        }
+        freeButtons.clear();
+        freeButtons.addAll(List.of(buttonA3,buttonB3,buttonC3,buttonA2,buttonB2,buttonC2,buttonA1,buttonB1,buttonC1));
     }
 
-    public static String DoWeHaveAWinner() {
+    public static String whoWins() {
         String message;
         message = "";
         if (checkIfThreeIsSame(buttonA1, buttonB1, buttonC1)) {
-            message = buttonA1.getText() + " wins";
-            return message;
+            message = buttonA1.getText();
         }
         if (checkIfThreeIsSame(buttonA2, buttonB2, buttonC2)) {
-            message = buttonA2.getText() + " wins";
-            return message;
+            message = buttonA2.getText();
         }
         if (checkIfThreeIsSame(buttonA3, buttonB3, buttonC3)) {
-            message = buttonA3.getText() + " wins";
-            return message;
+            message = buttonA3.getText();
         }
         if (checkIfThreeIsSame(buttonA1, buttonA2, buttonA3)) {
-            message = buttonA1.getText() + " wins";
-            return message;
+            message = buttonA1.getText();
         }
         if (checkIfThreeIsSame(buttonB1, buttonB2, buttonB3)) {
-            message = buttonB1.getText() + " wins";
-            return message;
+            message = buttonB1.getText();
         }
         if (checkIfThreeIsSame(buttonC1, buttonC2, buttonC3)) {
-            message = buttonC1.getText() + " wins";
-            return message;
+            message = buttonC1.getText();
         }
         if (checkIfThreeIsSame(buttonA1, buttonB2, buttonC3)) {
-            message = buttonA1.getText() + " wins";
-            return message;
+            message = buttonA1.getText();
         }
         if (checkIfThreeIsSame(buttonA3, buttonB2, buttonC1)) {
-            message = buttonC1.getText() + " wins";
-            return message;
+            message = buttonC1.getText();
+        }
+        if (! message.equals("")) {
+            if (message.equals("X")) {
+                message = "The "+TicTacToe.player1.getName()+" Player (X) wins";
+            } else {
+                message = "The " + TicTacToe.player2.getName() + " Player (O) wins";
+            }
         }
         return message;
     }
@@ -93,6 +99,6 @@ public class Field extends JPanel {
         return (a.getText().equals(b.getText()) && b.getText().equals(c.getText()));
     }
     public static boolean isFull(){
-        return buttons.stream().noneMatch(val -> val.getText().equals(" "));
+         return TicTacToe.counter == 9;
     }
 }
